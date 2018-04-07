@@ -1,17 +1,15 @@
 ##Scrapping web
 
-import bs4, requests, re, pymongo
+import bs4, requests, re
+from conn_conf import client
 
 
 ''' Inicialización de variables'''
 noticias = []
 
 '''Conexión a la BBDD'''
-stringConnection = 'mongodb://localhost:27017/'
-client = pymongo.MongoClient(stringConnection)
 db = client.proyecto_sinf
-cNoticias = db.noticias
-articulos = cNoticias.articulos
+articulos = db.noticias
 
 '''URL fuente'''
 url_base = "https://elpais.com"
