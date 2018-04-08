@@ -1,16 +1,13 @@
 ##Scrapping web
-
-import bs4, requests, re, pymongo
+from conn_conf import client
+import bs4, requests, re
 
 ''' Inicialización de variables'''
 noticias = []
 
 '''Conexión a la BBDD'''
-stringConnection = 'mongodb://localhost:27017/'
-client = pymongo.MongoClient(stringConnection)
 db = client.proyecto_sinf
-cNoticias = db.noticias
-colArticulos = cNoticias.articulos
+colArticulos = db.noticias
 
 '''URL fuente'''
 url_base = "https://elpais.com"
@@ -53,24 +50,27 @@ for articulo in articulos:
 
 	if not cuerpo == "" :
 		noticia = {
-			'diario':'elpais',
-			'titular':titular, 
-			'item_id': enlace, 
-			'cuerpo': cuerpo, 
-			'fecha': fecha
+			'diario' : 'elpais',
+			'titular' : titular, 
+			'item_id' : enlace, 
+			'cuerpo' : cuerpo, 
+			'fecha' : fecha, 
+			'n_analisis' : 0, 
+			'pais_resultado' : ""
 		}
 		noticias.append(noticia)
 
 print('\n\n ---------Fin descarga de datos---------')
 
 numNoticias = len(noticias)
-i = 1
+i = 0
 for noticia in noticias: 
-	print('Insertando '+str(i)+' de '+str(numNoticias)+' noticias...')
-	colArticulos.insert_one(noticia)
-	i = i + 1
-
-
+	if colArticulos.find({"item_id": noticia['item_id'] }).count() == 0 :
+		colArticulos.insert_one(noticia)
+		i = i + 1
+		
+print('Insertadas '+str(i)+' de '+str(numNoticias)+' noticias descargadas. ')
+print('\n\n ---------Fin la inserción de datos---------')
 
 
 

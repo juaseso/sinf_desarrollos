@@ -1,5 +1,4 @@
-import pymongo
-client = pymongo.MongoClient()
+from conn_conf import client
 db = client.proyecto_sinf
 col = db.countries
 

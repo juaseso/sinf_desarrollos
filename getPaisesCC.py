@@ -1,17 +1,15 @@
 ##Scrapping web
-
-import bs4, requests, re, pymongo
+from conn_conf import client
+import bs4, requests, re
 
 
 ''' Inicialización de variables'''
 listaPaises = []
 
 '''Conexión a la BBDD'''
-stringConnection = 'mongodb://localhost:27017/'
-client = pymongo.MongoClient(stringConnection)
 db = client.proyecto_sinf
-cNoticias = db.noticias
-paises = cNoticias.paises
+paises = db.paises
+
 
 '''URL fuente'''
 url_base = "http://utils.mucattu.com/iso_3166-1.html"
